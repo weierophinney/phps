@@ -11,6 +11,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class InstallExtensionCommand extends Command
 {
+    use PhpVersionTrait;
+
     private const DESC_TEMPLATE = 'Install an extension for the current PHP version.';
 
     private const HELP_TEMPLATE = <<< 'EOH'
@@ -36,8 +38,7 @@ EOH;
     protected function execute(InputInterface $input, OutputInterface $output) : int
     {
         $extension = $input->getArgument('extension');
-        $version   = sprintf('%s.%s', PHP_MAJOR_VERSION, PHP_MINOR_VERSION);
-
+        $version   = $this->getEnvPhpVersion();
 
         $command = sprintf(
             'sudo pecl -d php_suffix=%s install %s && sudo pecl uninstall -r %s',

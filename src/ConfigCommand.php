@@ -10,6 +10,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ConfigCommand extends Command
 {
+    use PhpVersionTrait;
+
     private const DESC_TEMPLATE = 'Configure the current PHP version.';
 
     private const HELP_TEMPLATE = <<< 'EOH'
@@ -29,7 +31,7 @@ EOH;
 
     protected function execute(InputInterface $input, OutputInterface $output) : int
     {
-        $version = sprintf('%s.%s', PHP_MAJOR_VERSION, PHP_MINOR_VERSION);
+        $version = $this->getEnvPhpVersion();
         $path    = sprintf('/etc/php/%s/cli/php.ini', $version);
 
         $editor  = getenv('EDITOR') ?? 'vim';
