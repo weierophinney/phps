@@ -1,0 +1,10 @@
+{
+    "require": {
+        "symfony/console": "^4.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Mwop\\Phps\\": "src/"
+        }
+    }
+}
