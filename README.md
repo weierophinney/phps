@@ -51,3 +51,19 @@ $ chmod 755 phps
 # Get usage information:
 $ phps
 ```
+
+## Configuration
+
+The command `phps config` allows you to configure the current PHP version. It
+does so by doing the following:
+
+- It creates a file named `/etc/php/{VERSION}/mods-available/phps.ini`.
+- It runs `sudo phpenmod -v {VERSION} -s cli phps`.
+- It opens that file in `$EDITOR`.
+
+The first time it runs, it will perform the first two steps, and you will see
+extra output when you do.
+
+If you wish to use that configuration in another SAPI (e.g., php-fpm), run the
+`phpenmod` command using that SAPI; e.g., `sudo phpenmod -v {VERSION} -s fpm
+phps`.
