@@ -23,6 +23,8 @@ $application = new Application('phps');
 
 $application->addCommands([
     new ConfigCommand(),
+    new DisableExtensionCommand(),
+    new EnableExtensionCommand(),
     new InstallExtensionCommand(),
     new ListVersionsCommand(),
     new SwitchCommand(),

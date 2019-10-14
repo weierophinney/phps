@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Mwop\Phps;
 
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -19,7 +20,7 @@ class InstallExtensionCommand extends Command
 Compiles, installs, and enables an extension for the current PHP version.
 EOH;
 
-    public function __construct(string $name = 'ext')
+    public function __construct(string $name = 'ext:install')
     {
         parent::__construct($name);
     }
@@ -73,22 +74,17 @@ EOC;
             return $exitValue;
         }
 
-        $command = sprintf(
-            'sudo phpenmod -v %s -s cli %s',
-            $version,
-            escapeshellarg($extension)
-        );
+        return $this->enableExtension($extension, $output);
+    }
 
-        passthru($command, $exitValue);
+    private function enableExtension(string $extension, OutputInterface $output) : int
+    {
+        $command = $this->getApplication()->find('ext:enable');
+        $input = new ArrayInput([
+            'command'   => 'ext:enable',
+            'extension' => $extension,
+        ]);
 
-        if ($exitValue) {
-            $output->writeln(
-                '<error>An error occurred registering the module.'
-                . ' Please review the output for details.</error>'
-            );
-            return $exitValue;
-        }
-
-        return 0;
+        return $command->run($input, $output);
     }
 }
