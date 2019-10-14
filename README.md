@@ -8,6 +8,8 @@ the ondrej/php PPA, including:
 - Temporarily use a version
 - Configure the current version
 - Compile, install, and enable extensions for the current version.
+- Enable previously installed extensions for the current PHP version.
+- Disable previously installed extensions for the current PHP version.
 
 See [my blog post on using the ondrej/php PPA](https://mwop.net/blog/2019-04-30-ondrej-multiversion-php.html)
 for background on why I created this tool.
