@@ -25,6 +25,7 @@ $application->addCommands([
     new ConfigCommand(),
     new DisableExtensionCommand(),
     new EnableExtensionCommand(),
+    new EnableVersionCommand(),
     new InstallExtensionCommand(),
     new ListVersionsCommand(),
     new SwitchCommand(),
