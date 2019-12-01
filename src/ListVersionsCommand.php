@@ -20,7 +20,7 @@ EOH;
     /** @var UpdateAlternatives */
     private $updateAlternatives;
 
-    public function __construct(string $name = 'versions')
+    public function __construct(string $name = 'version:list')
     {
         parent::__construct($name);
         $this->updateAlternatives = new UpdateAlternatives();
