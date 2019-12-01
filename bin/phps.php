@@ -32,6 +32,7 @@ $application->addCommands([
     new InstallVersionCommand(),
     new ListVersionsCommand(),
     new SwitchCommand(),
+    new UninstallVersionCommand(),
     new UseCommand(),
 ]);
 $application->run();
