@@ -87,7 +87,9 @@ EOH;
     private function initializeAlternatives(OutputInterface $output) : bool
     {
         $command = $this->getApplication()->find('init');
-        $result  = $command->run(new ArrayInput([]), $output);
+        $result  = $command->run(new ArrayInput([
+            'command' => 'init',
+        ]), $output);
         return (bool) $result;
     }
 
