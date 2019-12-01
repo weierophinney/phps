@@ -24,6 +24,7 @@ $application = new Application('phps');
 $application->addCommands([
     new ConfigCommand(),
     new DisableExtensionCommand(),
+    new DisableVersionCommand(),
     new EnableExtensionCommand(),
     new EnableVersionCommand(),
     new InitializeCommand(),
