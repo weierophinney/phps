@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Mwop\Phps;
 
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -12,13 +13,6 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class EnableVersionCommand extends Command
 {
-    private const ALTERNATIVES_TEMPLATE = <<< 'EOT'
-manual
-%s/.local/bin/php
-
-
-EOT;
-
     private const DESC_TEMPLATE = 'Enable a newly installed PHP version.';
 
     private const HELP_TEMPLATE = <<< 'EOH'
@@ -53,8 +47,10 @@ EOH;
             return 1;
         }
 
-        $alternativesFile = $this->getAlternativesFile($io);
-        if (null === $alternativesFile) {
+        $alternativesFile = sprintf('%s/.local/var/lib/alternatives/php', getenv('HOME'));
+        if (! file_exists($alternativesFile)
+            && ! $this->initializeAlternatives($output)
+        ) {
             return 1;
         }
 
@@ -88,31 +84,11 @@ EOH;
         return null;
     }
 
-    private function getAlternativesFile(SymfonyStyle $io) : ?string
+    private function initializeAlternatives(OutputInterface $output) : bool
     {
-        $alternativesFile = sprintf('%s/.local/var/lib/alternatives/php', getenv('HOME'));
-        if (file_exists($alternativesFile)) {
-            return $alternativesFile;
-        }
-
-        $create = $io->confirm(
-            sprintf('Do you want to create the file %s to handle your PHP versions?', $alternativesFile),
-            true
-        );
-
-        if (! $create) {
-            $io->success('Aborting');
-            return null;
-        }
-
-        $dir = dirname($alternativesFile);
-        if (! is_dir($dir)) {
-            mkdir($dir, 0777, true);
-        }
-
-        file_put_contents($alternativesFile, sprintf(self::ALTERNATIVES_TEMPLATE, getenv('HOME')));
-
-        return $alternativesFile;
+        $command = $this->getApplication()->find('init');
+        $result  = $command->run(new ArrayInput([]), $output);
+        return (bool) $result;
     }
 
     private function binaryAlreadyRegistered(string $binary, string $alternatives) : bool
