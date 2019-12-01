@@ -39,8 +39,8 @@ EOH;
         $io->title('Managed PHP versions');
 
         $versions = $this->updateAlternatives->getSupportedVersions();
+        usort($versions, 'version_compare');
 
-        $output->writeln('<info>Installed PHP versions:</info>');
         foreach ($versions as $version) {
             $output->writeln(sprintf('- %s', $version));
         }
