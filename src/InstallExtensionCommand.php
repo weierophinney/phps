@@ -9,6 +9,7 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 class InstallExtensionCommand extends Command
 {
@@ -38,8 +39,11 @@ EOH;
 
     protected function execute(InputInterface $input, OutputInterface $output) : int
     {
+        $io        = new SymfonyStyle($input, $output);
         $extension = $input->getArgument('extension');
         $version   = $this->getEnvPhpVersion();
+
+        $io->title(sprintf('Installing extension %s for PHP version %s', $extension, $version));
 
         $command = sprintf(
             'sudo pecl -d php_suffix=%s install %s && sudo pecl uninstall -r %s',

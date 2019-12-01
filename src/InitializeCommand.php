@@ -39,7 +39,9 @@ EOH;
 
     protected function execute(InputInterface $input, OutputInterface $output) : int
     {
-        $io               = new SymfonyStyle($input, $output);
+        $io = new SymfonyStyle($input, $output);
+        $io->title('Initializing PHP alternatives');
+
         $home             = getenv('HOME');
         $alternativesFile = sprintf('%s/.local/var/lib/alternatives/php', $home);
 

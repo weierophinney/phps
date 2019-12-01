@@ -45,6 +45,8 @@ EOH;
         $io      = new SymfonyStyle($input, $output);
         $version = $input->getArgument('version');
 
+        $io->title(sprintf('Disabling PHP version %s', $version));
+
         $alternativesFile = sprintf('%s/.local/var/lib/alternatives/php', getenv('HOME'));
         if (! file_exists($alternativesFile)) {
             $io->caution('You do not appear to have initialized your environment yet.');

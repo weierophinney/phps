@@ -8,6 +8,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 class DisableExtensionCommand extends Command
 {
@@ -37,8 +38,11 @@ EOH;
 
     protected function execute(InputInterface $input, OutputInterface $output) : int
     {
+        $io        = new SymfonyStyle($input, $output);
         $extension = $input->getArgument('extension');
         $version   = $this->getEnvPhpVersion();
+
+        $io->title(sprintf('Disabling extension %s in PHP version %s', $extension, $version));
 
         $command = sprintf(
             'sudo phpdismod -v %s -s cli %s',

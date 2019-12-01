@@ -42,6 +42,9 @@ EOH;
     {
         $io      = new SymfonyStyle($input, $output);
         $version = $input->getArgument('version');
+
+        $io->title(sprintf('Enabling PHP version %s', $version));
+
         $binary  = $this->getBinaryLocation($version, $io);
         if (null === $binary) {
             return 1;
