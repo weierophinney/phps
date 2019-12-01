@@ -17,8 +17,8 @@ class InstallVersionCommand extends Command
 
     private const HELP_TEMPLATE = <<< 'EOH'
 Installs and enables a new PHP version, with any additional packages as
-provided in the <ext> arguments.  The "common" and "cli" packages for the
-given version are always installed
+provided in the <ext> arguments.  The "common", "cli", and "dev" packages for
+the given version are always installed
 
 When providing a version, provide it in {MAJOR}.{MINOR} format.
 EOH;
@@ -48,7 +48,7 @@ EOH;
     {
         $io         = new SymfonyStyle($input, $output);
         $version    = $input->getArgument('version');
-        $extensions = array_merge(['common', 'cli'], $input->getArgument('ext'));
+        $extensions = array_merge(['common', 'cli', 'dev'], $input->getArgument('ext'));
 
         $io->title(sprintf('Installing PHP version %s', $version));
 
@@ -75,8 +75,8 @@ EOH;
         $packages = array_map(function ($ext) use ($version) {
             return sprintf('php%s-%s', $version, $ext);
         }, $extensions);
-        $command = sprintf('sudo apt install %s', implode(' ', $packages));
-        exec($command, $commandOutput, $return);
+        $command = sprintf('sudo apt -y install %s', implode(' ', $packages));
+        passthru($command, $return);
         return 0 === $return;
     }
 }
