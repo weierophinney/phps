@@ -54,6 +54,67 @@ $ chmod 755 phps
 $ phps
 ```
 
+Use the `init` command to prepare your environment:
+
+```bash
+$ phps init
+```
+
+Tell update-alternatives about PHP versions you wish to manage:
+
+```bash
+$ phps version:enable 7.3
+```
+
+If you uninstall a PHP version, you can tell update-alternatives you're no
+longer insterested in it:
+
+```bash
+$ phps version:disable 7.3
+```
+
+See what versions are currently being managed:
+
+```bash
+$ phps version:list
+```
+
+Switch which PHP version is used by default:
+
+```bash
+$ phps switch 7.4
+```
+
+Temporarily use another PHP version:
+
+```bash
+$ phps use 5.6
+```
+
+> The above will print out an alias you can define. Aliases only exist for the
+> lifetime of the current shell, so opening a new shell will revert to the
+> default.
+>
+> You can remove the alias using the `unalias php` command.
+
+Install an extension for the current PHP version:
+
+```bash
+$ phps ext:install swoole
+```
+
+Enable an extension in the current PHP version:
+
+```bash
+$ phps ext:enable swoole
+```
+
+Disable an extension in the current PHP version:
+
+```bash
+$ phps ext:disable swoole
+```
+
 ## Configuration
 
 The command `phps config` allows you to configure the current PHP version. It
