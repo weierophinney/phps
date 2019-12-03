@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace Mwop\Phps;
 
+use PackageVersions\Versions;
 use Symfony\Component\Console\Application;
 
 // Setup/verify autoloading
@@ -19,7 +20,8 @@ if (file_exists($a = __DIR__ . '/../../../autoload.php')) {
     exit(1);
 }
 
-$application = new Application('phps');
+$version     = strstr(Versions::getVersion('weierophinney/phps'), '@', true);
+$application = new Application('phps', $version);
 
 $application->addCommands([
     new AddRepoCommand(),

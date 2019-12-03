@@ -1,6 +1,8 @@
 {
+    "name": "weierophinney/phps",
     "require": {
-        "symfony/console": "^4.2"
+        "symfony/console": "^4.2 || ^5.0",
+        "ocramius/package-versions": "^1.5"
     },
     "autoload": {
         "psr-4": {
