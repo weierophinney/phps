@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Mwop\Phps;
 
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -21,9 +22,11 @@ EOT;
     private const DESC_TEMPLATE = 'Prepare your environment to manage different PHP versions.';
 
     private const HELP_TEMPLATE = <<< 'EOH'
-Prepares your local environment to manage different PHP versions by creating
-files that allow update-alternatives to know what PHP binaries it should
-manage.
+Prepares your local environment to manage different PHP versions by:
+
+- Initializing the packages.sury.org repository, if it is not already.
+- Creating files that allow update-alternatives to know what PHP binaries it
+  should manage.
 EOH;
 
     public function __construct(string $name = 'init')
@@ -40,6 +43,11 @@ EOH;
     protected function execute(InputInterface $input, OutputInterface $output) : int
     {
         $io = new SymfonyStyle($input, $output);
+
+        if (! $this->initializeAptRepo($output)) {
+            return 1;
+        }
+
         $io->title('Initializing PHP alternatives');
 
         $home             = getenv('HOME');
@@ -70,5 +78,15 @@ EOH;
         $io->success('Alternatives file created');
 
         return 0;
+    }
+
+    private function initializeAptRepo(OutputInterface $output) : bool
+    {
+        $command = $this->getApplication()->find('repo:add');
+        $result  = $command->run(new ArrayInput([
+            'command' => 'repo:add'
+        ]), $output);
+
+        return $result === 0;
     }
 }
