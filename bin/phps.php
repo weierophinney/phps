@@ -22,6 +22,7 @@ if (file_exists($a = __DIR__ . '/../../../autoload.php')) {
 $application = new Application('phps');
 
 $application->addCommands([
+    new AddRepoCommand(),
     new ConfigCommand(),
     new DisableExtensionCommand(),
     new DisableVersionCommand(),
