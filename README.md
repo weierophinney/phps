@@ -60,7 +60,21 @@ Use the `init` command to prepare your environment:
 $ phps init
 ```
 
-Tell update-alternatives about PHP versions you wish to manage:
+Install a new PHP version, with the curl and bcmath extensions:
+
+```bash
+$ phps version:install 7.4 curl bcmath
+```
+
+Uninstall a PHP version entirely:
+
+```bash
+$ phps version:uninstall 5.6
+```
+
+Manually tell update-alternatives about PHP versions you wish to manage (e.g.,
+if you were already using the sury.org repository to handle multiple PHP
+versions):
 
 ```bash
 $ phps version:enable 7.3
@@ -96,18 +110,6 @@ $ phps use 5.6
 > default.
 >
 > You can remove the alias using the `unalias php` command.
-
-Install a new PHP version, with the curl and bcmath extensions:
-
-```bash
-$ phps version:install 7.4 curl bcmath
-```
-
-Uninstall a PHP version entirely:
-
-```bash
-$ phps version:uninstall 5.6
-```
 
 Install an extension for the current PHP version:
 
