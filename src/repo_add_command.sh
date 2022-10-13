@@ -9,7 +9,14 @@ help: |-
   Otherwise, it will add the packages.sury.org repo via a new apt sources.list.d
   file, and then run apt-get update.
 ---
-echo "# this file is located in 'src/repo_add_command.sh'"
-echo "# code for 'phps repo add' goes here"
-echo "# you can edit it freely and regenerate (it will not be overwritten)"
-inspect_args
+if grep -qrP '(packages\.sury\.org|ppa\.launchpadcontent\.net\/ondrej\/php)' /etc/apt/sources.list.d; then
+    green "Repo is already present on your system"
+else
+    green "Installing Sury repository using add-apt-repository"
+    if add-apt-repository ppa:ondrej/php; then
+        green "Repo injected and ready!"
+    else
+        red "Unable to inject Sury PPA; see above logs for details"
+        exit 1
+    fi
+fi
