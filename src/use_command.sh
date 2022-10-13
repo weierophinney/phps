@@ -1,4 +1,4 @@
-# shellcheck disable=SC2215
+# shellcheck disable=SC2215,SC2168,SC2154
 name: use
 help: |-
   Choose which PHP version to use in the current session.
@@ -8,7 +8,19 @@ help: |-
 args:
 - import: src/flags/version_arg.yml
 ---
-echo "# this file is located in 'src/use_command.sh'"
-echo "# code for 'phps use' goes here"
-echo "# you can edit it freely and regenerate (it will not be overwritten)"
-inspect_args
+local version="${args[version]}"
+local supported_versions
+
+if [[ "${version}" == "auto" ]]; then
+    version="$(alternatives_get_best_version)"
+fi
+
+supported_versions="$(alternatives_get_supported_versions)"
+if [[ "${supported_versions}" != *"${version}"* ]]; then
+    red "Unsupported version; must be one of:"
+    red "${supported_versions}"
+    exit 1
+else
+    green "Cut and paste the following line to temporarily switch to the selected PHP version:"
+    echo "    alias php=/usr/bin/php${version}"
+fi
