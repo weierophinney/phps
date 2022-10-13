@@ -1,5 +1,5 @@
 config_template() {
-    cat << EOF
+    /usr/bin/cat << EOF
 ; Machine-specific PHP settings.
 ; priority=99
 ;
@@ -10,5 +10,12 @@ config_template() {
 ;
 ; If you are unsure what settings are available, look in ../{SAPI}/php.ini.
 EOF
+}
 
+alternatives_template() {
+    /usr/bin/cat << EOF
+manual
+%s/.local/bin/php
+
+EOF
 }
