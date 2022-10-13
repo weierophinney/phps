@@ -19,3 +19,11 @@ manual
 
 EOF
 }
+
+extension_config_template() {
+    /usr/bin/cat << EOF
+; configuration for php %s module
+; priority=20
+extension=%s.so
+EOF
+}
