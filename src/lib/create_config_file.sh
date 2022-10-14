@@ -22,4 +22,3 @@ create_config_file() {
         sudo phpenmod -v "${version}" -s cli phps
     fi
 }
-
