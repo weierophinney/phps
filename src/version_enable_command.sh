@@ -1,4 +1,4 @@
-# shellcheck disable=SC2215
+# shellcheck disable=SC2215,SC2154,SC2168
 name: enable
 help: |-
   Enable a newly installed PHP version.
@@ -10,7 +10,26 @@ help: |-
 args:
 - import: src/flags/version_arg.yml
 ---
-echo "# this file is located in 'src/version_enable_command.sh'"
-echo "# code for 'phps version enable' goes here"
-echo "# you can edit it freely and regenerate (it will not be overwritten)"
-inspect_args
+local version="${args[version]}"
+local alternativesFile="${HOME}/.local/var/lib/alternatives/php"
+local binary="/usr/bin/php${version}"
+local priority="${version//./0}"
+
+green "Enabling PHP version ${version}"
+
+if [[ ! -f "${binary}" ]]; then
+    red "Unable to find binary for version ${version}; executable '${binary}' not found"
+    exit 1
+fi
+
+if ! is_env_initialized; then
+   init_command
+fi
+
+if grep -q "${binary}" "${alternativesFile}"; then
+    green "Binary already registered!"
+else
+    file_trim_trailing_lines "${alternativesFile}"
+    printf "%s\n%s\n\n" "${binary}" "${priority}" >> "${alternativesFile}"
+    green "Done!"
+fi
