@@ -22,30 +22,7 @@ Clone the repository:
 $ git clone https://github.com/weierophinney/phps.git
 ```
 
-Then enter it and install dependencies:
-
-```php
-$ cd phps
-$ composer install
-```
-
-Then create a script in `$HOME/.local/bin/` (or elsewhere on your `$PATH`) with
-the following contents:
-
-```bash
-#!/bin/sh
-# Use the shell of your choice on the above line.
-# Use the PHP version of your choice on the line below.
-/usr/bin/php7.2 path/to/phps/bin/phps.php $@
-```
-
-I suggest calling the script `phps`.
-
-Make the script executable:
-
-```bash
-$ chmod 755 phps
-```
+Then copy or symlink the `phps` script to `$HOME/.local/bin/` (or elsewhere on your `$PATH`)
 
 ## Usage
 
@@ -63,13 +40,13 @@ $ phps init
 Install a new PHP version, with the curl and bcmath extensions:
 
 ```bash
-$ phps version:install 7.4 curl bcmath
+$ phps version install 7.4 curl bcmath
 ```
 
 Uninstall a PHP version entirely:
 
 ```bash
-$ phps version:uninstall 5.6
+$ phps version uninstall 5.6
 ```
 
 Manually tell update-alternatives about PHP versions you wish to manage (e.g.,
@@ -77,20 +54,20 @@ if you were already using the sury.org repository to handle multiple PHP
 versions):
 
 ```bash
-$ phps version:enable 7.3
+$ phps version enable 7.3
 ```
 
 If you uninstall a PHP version, you can tell update-alternatives you're no
 longer insterested in it:
 
 ```bash
-$ phps version:disable 7.3
+$ phps version disable 7.3
 ```
 
 See what versions are currently being managed:
 
 ```bash
-$ phps version:list
+$ phps version list
 ```
 
 Switch which PHP version is used by default:
@@ -114,19 +91,19 @@ $ phps use 5.6
 Install an extension for the current PHP version:
 
 ```bash
-$ phps ext:install swoole
+$ phps ext install swoole
 ```
 
 Enable an extension in the current PHP version:
 
 ```bash
-$ phps ext:enable swoole
+$ phps ext enable swoole
 ```
 
 Disable an extension in the current PHP version:
 
 ```bash
-$ phps ext:disable swoole
+$ phps ext disable swoole
 ```
 
 ## Configuration

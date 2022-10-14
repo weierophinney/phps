@@ -1,0 +1,28 @@
+name: phps
+help: Manage parallel PHP installations
+version: 2.0.0dev1
+
+commands:
+- import: src/completions_command.sh
+- import: src/config_command.sh
+- import: src/init_command.sh
+- import: src/switch_command.sh
+- import: src/use_command.sh
+- name: ext
+  help: "Manage PHP extensions"
+  commands:
+  - import: src/ext_disable_command.sh
+  - import: src/ext_enable_command.sh
+  - import: src/ext_install_command.sh
+- name: repo
+  help: "Configure the Sury repo"
+  commands:
+  - import: src/repo_add_command.sh
+- name: version
+  help: "Manage PHP versions"
+  commands:
+  - import: src/version_disable_command.sh
+  - import: src/version_enable_command.sh
+  - import: src/version_install_command.sh
+  - import: src/version_list_command.sh
+  - import: src/version_uninstall_command.sh
