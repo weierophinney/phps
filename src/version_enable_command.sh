@@ -23,7 +23,7 @@ if [[ ! -f "${binary}" ]]; then
 fi
 
 if ! is_env_initialized; then
-   init_command
+   init_env
 fi
 
 if grep -q "${binary}" "${alternativesFile}"; then

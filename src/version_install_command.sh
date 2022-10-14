@@ -1,4 +1,4 @@
-# shellcheck disable=SC2215
+# shellcheck disable=SC2215,SC2168
 name: install
 help: |-
   Install a new PHP version.
@@ -15,7 +15,28 @@ args:
   required: false
   repeatable: true
 ---
-echo "# this file is located in 'src/version_install_command.sh'"
-echo "# code for 'phps version install' goes here"
-echo "# you can edit it freely and regenerate (it will not be overwritten)"
-inspect_args
+local version="${args[version]}"
+local packages=()
+local extension
+local extensions
+
+if [[ "${args[extension]+abc}" ]]; then
+    eval "extensions=(${args[extension]})"
+else
+    extensions=()
+fi
+
+extensions=("${extensions[@]}" "cli" "common" "dev")
+
+green "Installing PHP version ${version}"
+
+for extension in "${extensions[@]}"; do
+    packages=("${packages[@]}" "php${version}-${extension}")
+done
+
+if ! sudo apt -y install "${packages[@]}"; then
+    red "Error installing PHP ${version} (with extensions ${extensions[*]}); check logs for details"
+    exit 1
+elif ! version_enable "${version}"; then
+    exit 1
+fi

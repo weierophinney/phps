@@ -10,24 +10,11 @@ help: |-
 ---
 local alternativesDir="${HOME}/.local/var/lib/alternatives"
 local alternativesFile="${alternativesDir}/php"
-local prompt
 
 if [[ -f "${alternativesFile}" ]]; then
     green "Your environment is already prepared!"
 else
-    blue "Do you want to create the file ${alternativesFile} to handle your PHP versions?"
-    read -r prompt
-    if [[ "${prompt}" =~ ^[y|Y] ]]; then
-        if [[ ! -d "${alternativesDir}" ]]; then
-            mkdir -p "${alternativesDir}"
-        fi
-
-        # shellcheck disable=SC2059
-        printf "$(alternatives_template)" "${HOME}" > "${alternativesFile}"
-
-        green "Alternatives file created"
-    else
-        red "Aborting"
+    if ! init_env; then
         exit 1
     fi
 fi
