@@ -1,5 +1,5 @@
 #########################################
-## Initialize the alternatives environment
+## Enable a PHP version in the alternatives
 ##
 ## Arguments:
 ##   $1 PHP version to enable

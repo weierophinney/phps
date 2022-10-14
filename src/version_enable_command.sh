@@ -11,25 +11,7 @@ args:
 - import: src/flags/version_arg.yml
 ---
 local version="${args[version]}"
-local alternativesFile="${HOME}/.local/var/lib/alternatives/php"
-local binary="/usr/bin/php${version}"
-local priority="${version//./0}"
 
-green "Enabling PHP version ${version}"
-
-if [[ ! -f "${binary}" ]]; then
-    red "Unable to find binary for version ${version}; executable '${binary}' not found"
+if ! version_enable "${version}"; then
     exit 1
-fi
-
-if ! is_env_initialized; then
-   init_env
-fi
-
-if grep -q "${binary}" "${alternativesFile}"; then
-    green "Binary already registered!"
-else
-    file_trim_trailing_lines "${alternativesFile}"
-    printf "%s\n%s\n\n" "${binary}" "${priority}" >> "${alternativesFile}"
-    green "Done!"
 fi
