@@ -1,6 +1,6 @@
 name: phps
 help: Manage parallel PHP installations
-version: 2.1.0
+version: 2.1.1dev
 
 commands:
 - import: src/completions_command.sh
