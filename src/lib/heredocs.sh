@@ -12,10 +12,34 @@ config_template() {
 EOF
 }
 
-alternatives_template() {
+alternatives_template_php() {
     /usr/bin/cat << EOF
 manual
 %s/.local/bin/php
+
+EOF
+}
+
+alternatives_template_php_config() {
+    /usr/bin/cat << EOF
+manual
+%s/.local/bin/php-config
+
+EOF
+}
+
+alternatives_template_phpize() {
+    /usr/bin/cat << EOF
+manual
+%s/.local/bin/phpize
+
+EOF
+}
+
+alternatives_template_phar() {
+    /usr/bin/cat << EOF
+manual
+%s/.local/bin/phar
 
 EOF
 }

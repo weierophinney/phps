@@ -9,24 +9,14 @@
 ##   1 on failure
 #########################################
 init_env() {
-    local alternativesDir="${HOME}/.local/var/lib/alternatives"
-    local alternativesFile="${alternativesDir}/php"
-    local prompt
+    local status=0
+    local type
 
-    blue "Do you want to create the file ${alternativesFile} to handle your PHP versions?"
-    read -r prompt
-    if [[ "${prompt}" =~ ^[y|Y] ]]; then
-        if [[ ! -d "${alternativesDir}" ]]; then
-            mkdir -p "${alternativesDir}"
+    for type in php phpize php-config phar;do
+        if ! init_env_for_type "${type}"; then
+            status=1
         fi
+    done
 
-        # shellcheck disable=SC2059
-        printf "$(alternatives_template)" "${HOME}" > "${alternativesFile}"
-
-        green "Alternatives file created"
-        return 0
-    else
-        red "Aborting"
-        return 1
-    fi
+    return $status
 }
