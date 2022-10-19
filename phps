@@ -2576,7 +2576,7 @@ phps_version_uninstall_parse_requirements() {
 
 # :command.initialize
 initialize() {
-  version="2.0.0"
+  version="2.1.0"
   long_usage=''
   set -e
 
