@@ -9,8 +9,8 @@ args:
 - import: src/flags/version_arg.yml
 ---
 local version="${args[version]}"
+local status=0
 local supported_versions
-local command
 
 if [[ "${version}" == "auto" ]]; then
     version="$(alternatives_get_best_version)"
@@ -22,13 +22,25 @@ if [[ "${supported_versions}" != *"${version}"* ]]; then
     red "${supported_versions}"
     exit 1
 else
-    command="$(alternatives_command)"
-    if $command --set php "/usr/bin/php${version}"; then
-        green "Now using PHP version ${version}"
-        green "If you have previously aliased to a specific version, run:"
-        echo "    unalias php"
-    else
-        red "Unable to switch PHP version"
-        exit 1
+    if ! switch_php "${version}"; then
+        status=1
+    fi
+
+    if ! switch_phar "${version}"; then
+        status=1
+    fi
+
+    if ! switch_php_config "${version}"; then
+        status=1
+    fi
+
+    if ! switch_phpize "${version}"; then
+        status=1
+    fi
+
+    if [[ $status != 0 ]]; then
+        red "There were one or more errors switching to version ${version}!"
+        echo "Please review the logs for details"
+        exit $status
     fi
 fi

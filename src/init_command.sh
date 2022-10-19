@@ -9,12 +9,20 @@ help: |-
   - Creates files that allow the user update-alternatives settings to know which PHP binaries it should manage.
 ---
 local alternativesDir="${HOME}/.local/var/lib/alternatives"
-local alternativesFile="${alternativesDir}/php"
+local status=0
+local alternativesFile
+local type
 
-if [[ -f "${alternativesFile}" ]]; then
-    green "Your environment is already prepared!"
-else
-    if ! init_env; then
-        exit 1
+for type in php php-config phpize phar; do
+    alternativesFile="${alternativesDir}/${type}"
+    if [[ -f "${alternativesFile}" ]]; then
+        green "Alternative for ${type} binary is already prepared!"
+    elif ! init_env_for_type "${type}"; then
+        status=1
     fi
+done
+
+if [[ $status == 1 ]]; then
+    red "One or more errors when initializing the environment; please refer to the logs"
+    exit 1
 fi

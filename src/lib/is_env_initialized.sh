@@ -10,5 +10,17 @@ is_env_initialized() {
         return 1;
     fi
 
+    if [[ ! -f "${HOME}/.local/var/lib/alternatives/php-config" ]]; then
+        return 1;
+    fi
+
+    if [[ ! -f "${HOME}/.local/var/lib/alternatives/phpize" ]]; then
+        return 1;
+    fi
+
+    if [[ ! -f "${HOME}/.local/var/lib/alternatives/phar" ]]; then
+        return 1;
+    fi
+
     return 0;
 }

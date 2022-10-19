@@ -15,6 +15,7 @@ version_disable() {
     local version=$1
     local alternativesFile="${HOME}/.local/var/lib/alternatives/php"
     local binary="/usr/bin/php${version}"
+    local status=0
     local command
     local tmpfile
 
@@ -27,21 +28,32 @@ version_disable() {
         return 1
     fi
 
-    binary="/usr/bin/php${version}"
-    if ! grep -q "${binary}" "${alternativesFile}"; then
-        green "Version does not appear to be registered; nothing to do"
-        return 0
-    fi
+    for type in php php-config phpize phar; do
+        alternativesFile="${HOME}/.local/var/lib/alternatives/${type}"
+        binary="/usr/bin/${type}${version}"
 
-    tmpfile="$(mktemp)"
-    command="$(printf '{gsub("\\\\n%s\\\\n[0-9]+",""); print}' "${binary}")"
-    if ! awk -v RS="\0" -v ORS="" "${command}" "${alternativesFile}" > "${tmpfile}"; then
-        red "The attempt to disable the version failed"
-        echo "You will need to manually edit the file ${alternativesFile} to remove the entry for ${binary}"
+        green "Disabling ${type} binary for PHP ${version}"
+
+        if ! grep -q "${binary}" "${alternativesFile}"; then
+            green "Version does not appear to be registered; nothing to do"
+        else
+            tmpfile="$(mktemp)"
+            command="$(printf '{gsub("\\\\n%s\\\\n[0-9]+",""); print}' "${binary}")"
+            if ! awk -v RS="\0" -v ORS="" "${command}" "${alternativesFile}" > "${tmpfile}"; then
+                red "The attempt to disable the version failed"
+                echo "You will need to manually edit the file ${alternativesFile} to remove the entry for ${binary}"
+                status=1
+            else
+                mv "${tmpfile}" "${alternativesFile}"
+            fi
+        fi
+    done
+
+    if [[ $status == 0 ]]; then
+        green "Done!"
+        return 0
+    else
+        red "Done, but with errors"
         return 1
     fi
-
-    mv "${tmpfile}" "${alternativesFile}"
-    green "Done!"
-    return 0
 }
