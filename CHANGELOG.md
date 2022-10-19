@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 2.1.0 - 2022-10-19
+
+### Changed
+
+The utility now manages the alternatives for each of the php-config, phpize, and phar binaries.
+Any PHP installation, enable operation, disable operation, or switch operation will now update the alternatives for these binaries in addition to the PHP binary.
+
 ## 2.0.0 - 2022-10-14
 
 ### Changed
